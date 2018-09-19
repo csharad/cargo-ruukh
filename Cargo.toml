@@ -1,0 +1,9 @@
+[package]
+name = "cargo-ruukh"
+version = "0.1.0"
+authors = ["Sharad Chand <sharad.d.chand@gmail.com>"]
+
+[dependencies]
+serde = { version = "1.0.79", features = ["serde_derive"] }
+toml = "0.4.6"
+failure = "0.1.2"
