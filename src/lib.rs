@@ -29,7 +29,14 @@ impl CargoRuukh {
         CargoRuukh::from_iter(args)
     }
 
-    pub fn run(self) {
-        unimplemented!()
+    pub fn exec(self) {
+        let result = match self {
+            CargoRuukh::Build(cmd) => cmd.exec(),
+            CargoRuukh::Run(_) => unimplemented!(),
+        };
+
+        if let Err(err) = result {
+            eprintln!("Error occurred: {}", err);
+        }
     }
 }

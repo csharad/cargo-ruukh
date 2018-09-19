@@ -22,5 +22,5 @@ fn main() {
         filtered_args.extend(args);
         filtered_args
     };
-    CargoRuukh::from_args(args).run();
+    CargoRuukh::from_args(args).exec();
 }
