@@ -6,6 +6,8 @@ extern crate failure;
 #[macro_use]
 extern crate structopt;
 
+use structopt::StructOpt;
+
 mod buildcmd;
 mod error;
 mod parse;
@@ -15,7 +17,19 @@ mod runcmd;
 #[structopt(name = "cargo-ruukh")]
 pub enum CargoRuukh {
     /// Compile the current Ruukh project for WASM target
+    #[structopt(name = "build")]
     Build(buildcmd::BuildCommand),
     /// Build and execute src/lib.rs on browser
+    #[structopt(name = "run")]
     Run(runcmd::RunCommand),
+}
+
+impl CargoRuukh {
+    pub fn from_args(args: Vec<String>) -> CargoRuukh {
+        CargoRuukh::from_iter(args)
+    }
+
+    pub fn run(self) {
+        unimplemented!()
+    }
 }
