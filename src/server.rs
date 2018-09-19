@@ -1,11 +1,8 @@
 use colored::Colorize;
-use error::Error;
 use parse::CliData;
 use warp::{self, Filter};
 
-pub fn launch_server(debug: bool) -> Result<(), Error> {
-    let cli_data = CliData::sniff()?;
-
+pub fn launch_server(debug: bool, cli_data: CliData) {
     let html = format!("
 <!DOCTYPE html>
 <html lang=\"en\">
@@ -33,6 +30,4 @@ pub fn launch_server(debug: bool) -> Result<(), Error> {
 
     println!("     {} at http://localhost:3000", "Serving".green().bold());
     warp::serve(routes).run(([127, 0, 0, 1], 3000));
-
-    Ok(())
 }

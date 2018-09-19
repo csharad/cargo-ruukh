@@ -5,6 +5,7 @@ use std::{
 };
 use toml;
 
+#[derive(Clone)]
 pub struct CliData {
     pub manifest_path: PathBuf,
     pub workspace_path: PathBuf,
@@ -41,6 +42,10 @@ impl CliData {
             target_path.push("release");
         }
         target_path
+    }
+
+    pub fn project_path(&self) -> &Path {
+        self.manifest_path.parent().unwrap()
     }
 }
 

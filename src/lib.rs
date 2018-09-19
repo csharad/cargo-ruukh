@@ -6,6 +6,7 @@ extern crate failure;
 #[macro_use]
 extern crate structopt;
 extern crate colored;
+extern crate notify;
 extern crate warp;
 
 use structopt::StructOpt;
