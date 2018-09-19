@@ -10,6 +10,7 @@ pub struct CliData {
     pub manifest_path: PathBuf,
     pub workspace_path: PathBuf,
     pub package_name: String,
+    pub index_html_path: Option<PathBuf>,
 }
 
 impl CliData {
@@ -20,10 +21,12 @@ impl CliData {
         let project_manifest: ProjectManifest =
             toml::from_str(&manifest_str).map_err(Error::ManifestParse)?;
         let workspace_path = find_workspace_for_manifest(&manifest_path);
+        let index_html_path = find_index_html(manifest_path.parent().unwrap());
         Ok(CliData {
             manifest_path,
             workspace_path,
             package_name: project_manifest.package.name,
+            index_html_path,
         })
     }
 
@@ -93,4 +96,13 @@ fn find_workspace_for_manifest(path: &Path) -> PathBuf {
     }
 
     find_workspace_recur(path.parent().unwrap()).unwrap()
+}
+
+fn find_index_html(path: &Path) -> Option<PathBuf> {
+    let src = path.join("src/index.html");
+    if src.is_file() {
+        Some(src)
+    } else {
+        None
+    }
 }

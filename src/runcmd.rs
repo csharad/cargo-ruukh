@@ -38,7 +38,7 @@ impl RunCommand {
             Self::watch_files(&buildcmd, &watch_path);
         }
 
-        server_thread.join().unwrap();
+        server_thread.join().unwrap()?;
         Ok(())
     }
 

@@ -1,9 +1,14 @@
 use colored::Colorize;
+use error::Error;
 use parse::CliData;
+use std::fs;
 use warp::{self, Filter};
 
-pub fn launch_server(debug: bool, cli_data: CliData) {
-    let html = format!("
+pub fn launch_server(debug: bool, cli_data: CliData) -> Result<(), Error> {
+    let html = if let Some(ref index_html_path) = cli_data.index_html_path {
+        fs::read_to_string(index_html_path).map_err(Error::Io)?
+    } else {
+        format!("
 <!DOCTYPE html>
 <html lang=\"en\">
 <head>
@@ -21,7 +26,8 @@ pub fn launch_server(debug: bool, cli_data: CliData) {
     </script>
 </body>
 </html>
-        ", package_name = cli_data.package_name);
+        ", package_name = cli_data.package_name)
+    };
 
     let build_dir = warp::path("build").and(warp::fs::dir(cli_data.target_path(debug)));
 
@@ -30,4 +36,5 @@ pub fn launch_server(debug: bool, cli_data: CliData) {
 
     println!("     {} at http://localhost:3000", "Serving".green().bold());
     warp::serve(routes).run(([127, 0, 0, 1], 3000));
+    Ok(())
 }
