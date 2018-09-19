@@ -26,6 +26,10 @@ impl BuildCommand {
         let mut child = exec_cmd(&cargo_build).map_err(Error::BuildFailed)?;
         child.wait().map_err(Error::BuildFailed)?;
 
+        println!(
+            "  {} JS bindings",
+            "Generating".green().bold()
+        );
         let cli_data = CliData::sniff()?;
         let target_path = cli_data.wasm_file_path(!self.release);
         let wasm_bindgen = format!(
