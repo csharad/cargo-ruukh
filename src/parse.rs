@@ -27,15 +27,20 @@ impl CliData {
     }
 
     pub fn wasm_file_path(&self, debug: bool) -> PathBuf {
-        let mut file_path = self.workspace_path.clone();
-        file_path.push("target/wasm32-unknown-unknown");
-        if debug {
-            file_path.push("debug");
-        } else {
-            file_path.push("release");
-        }
+        let mut file_path = self.target_path(debug);
         file_path.push(format!("{}.wasm", self.package_name.replace('-', "_")));
         file_path
+    }
+
+    pub fn target_path(&self, debug: bool) -> PathBuf {
+        let mut target_path = self.workspace_path.clone();
+        target_path.push("target/wasm32-unknown-unknown");
+        if debug {
+            target_path.push("debug");
+        } else {
+            target_path.push("release");
+        }
+        target_path
     }
 }
 
