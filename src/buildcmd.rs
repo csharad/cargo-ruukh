@@ -1,3 +1,4 @@
+use colored::Colorize;
 use error::Error;
 use std::process::Command;
 
@@ -10,6 +11,11 @@ pub struct BuildCommand {
 
 impl BuildCommand {
     pub fn exec(&self) -> Result<(), Error> {
+        println!(
+            "    {} Ruukh project for WASM target",
+            "Building".green().bold()
+        );
+
         let mut cargo_build = "cargo build --target wasm32-unknown-unknown".to_string();
         if self.release {
             cargo_build.push_str(" --release");

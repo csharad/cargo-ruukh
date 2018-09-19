@@ -5,6 +5,7 @@ extern crate serde;
 extern crate failure;
 #[macro_use]
 extern crate structopt;
+extern crate colored;
 
 use structopt::StructOpt;
 
