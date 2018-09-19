@@ -5,8 +5,12 @@ use std::fs;
 use warp::{self, Filter};
 
 pub fn launch_server(debug: bool, cli_data: CliData) -> Result<(), Error> {
+    let package_name = cli_data.package_name.replace('-', "_");
     let html = if let Some(ref index_html_path) = cli_data.index_html_path {
-        fs::read_to_string(index_html_path).map_err(Error::Io)?
+        fs::read_to_string(index_html_path)
+            .map_err(Error::Io)?
+            .replace("$PACKAGE_NAME_JS$", &format!("{}.js", package_name))
+            .replace("$PACKAGE_NAME_WASM$", &format!("{}_bg.wasm", package_name))
     } else {
         format!("
 <!DOCTYPE html>
@@ -26,7 +30,7 @@ pub fn launch_server(debug: bool, cli_data: CliData) -> Result<(), Error> {
     </script>
 </body>
 </html>
-        ", package_name = cli_data.package_name)
+        ", package_name = package_name)
     };
 
     let build_dir = warp::path("build").and(warp::fs::dir(cli_data.target_path(debug)));
