@@ -1,6 +1,8 @@
 use colored::Colorize;
 use error::Error;
-use std::process::Command;
+use parse::CliData;
+use std::io;
+use std::process::{Child, Command};
 
 #[derive(StructOpt)]
 pub struct BuildCommand {
@@ -21,19 +23,27 @@ impl BuildCommand {
             cargo_build.push_str(" --release");
         }
 
-        let child = if cfg!(target_os = "windows") {
-            Command::new("cmd")
-                .args(&["/C", &cargo_build])
-                .spawn()
-                .map_err(Error::BuildFailed)
-        } else {
-            Command::new("sh")
-                .arg("-c")
-                .arg(&cargo_build)
-                .spawn()
-                .map_err(Error::BuildFailed)
-        };
-        child?.wait().map_err(Error::BuildFailed)?;
+        let mut child = exec_cmd(&cargo_build).map_err(Error::BuildFailed)?;
+        child.wait().map_err(Error::BuildFailed)?;
+
+        let cli_data = CliData::sniff()?;
+        let target_path = cli_data.wasm_file_path(!self.release);
+        let wasm_bindgen = format!(
+            "wasm-bindgen --no-modules {} --out-dir {}",
+            target_path.to_string_lossy(),
+            target_path.parent().unwrap().to_string_lossy()
+        );
+        let mut child = exec_cmd(&wasm_bindgen).map_err(Error::BuildFailed)?;
+        child.wait().map_err(Error::BuildFailed)?;
+
         Ok(())
+    }
+}
+
+fn exec_cmd(arg: &str) -> io::Result<Child> {
+    if cfg!(target_os = "windows") {
+        Command::new("cmd").args(&["/C", arg]).spawn()
+    } else {
+        Command::new("sh").arg("-c").arg(arg).spawn()
     }
 }

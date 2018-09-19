@@ -1,26 +1,86 @@
 use error::Error;
+use std::{
+    env, fs,
+    path::{Path, PathBuf},
+};
 use toml;
 
-pub struct CliData<'a> {
-    pub package_name: &'a str,
+pub struct CliData {
+    pub manifest_path: PathBuf,
+    pub workspace_path: PathBuf,
+    pub package_name: String,
 }
 
-impl<'a> CliData<'a> {
-    fn parse(manifest: &str) -> Result<CliData<'_>, Error> {
-        let manifest: ProjectManifest = toml::from_str(manifest).map_err(Error::ManifestParse)?;
+impl CliData {
+    pub fn sniff() -> Result<CliData, Error> {
+        let pwd = env::current_dir().map_err(Error::Io)?;
+        let manifest_path = find_manifest(&pwd)?;
+        let manifest_str = fs::read_to_string(&manifest_path).map_err(Error::Io)?;
+        let project_manifest: ProjectManifest =
+            toml::from_str(&manifest_str).map_err(Error::ManifestParse)?;
+        let workspace_path = find_workspace_for_manifest(&manifest_path);
         Ok(CliData {
-            package_name: manifest.package.name,
+            manifest_path,
+            workspace_path,
+            package_name: project_manifest.package.name,
         })
+    }
+
+    pub fn wasm_file_path(&self, debug: bool) -> PathBuf {
+        let mut file_path = self.workspace_path.clone();
+        file_path.push("target/wasm32-unknown-unknown");
+        if debug {
+            file_path.push("debug");
+        } else {
+            file_path.push("release");
+        }
+        file_path.push(format!("{}.wasm", self.package_name.replace('-', "_")));
+        file_path
     }
 }
 
 #[derive(Deserialize)]
-struct ProjectManifest<'a> {
-    #[serde(borrow)]
-    package: Package<'a>,
+struct ProjectManifest {
+    package: Package,
 }
 
 #[derive(Deserialize)]
-struct Package<'a> {
-    name: &'a str,
+struct Package {
+    name: String,
+}
+
+fn find_manifest(path: &Path) -> Result<PathBuf, Error> {
+    let manifest = path.join("Cargo.toml");
+    if fs::metadata(&manifest).is_ok() {
+        Ok(manifest)
+    } else {
+        let path = path.parent().map(|parent| find_manifest(parent));
+        match path {
+            Some(val) => val,
+            None => Err(Error::ManifestNotFound),
+        }
+    }
+}
+
+/// Recursively finds if there are any `Cargo.toml` in the parent directories
+/// of the given manifest file.
+fn find_workspace_for_manifest(path: &Path) -> PathBuf {
+    fn find_workspace_recur(path: &Path) -> Option<PathBuf> {
+        let manifest = path.join("Cargo.toml");
+        if fs::metadata(&manifest).is_ok() {
+            if let Some(parent) = path
+                .parent()
+                .and_then(|parent| find_workspace_recur(parent))
+            {
+                Some(parent)
+            } else {
+                Some(path.to_owned())
+            }
+        } else {
+            path.parent()
+                .and_then(|parent| find_workspace_recur(parent))
+        }
+    }
+
+    find_workspace_recur(path.parent().unwrap()).unwrap()
 }
