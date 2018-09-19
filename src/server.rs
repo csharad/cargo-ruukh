@@ -17,7 +17,7 @@ pub fn launch_server(debug: bool, cli_data: CliData) {
     <div id=\"app\"></div>
     <script src=\"build/{package_name}.js\"></script>
     <script>
-        wasm_bindgen(\"build/{package_name}_bg.wasm\").then(() => wasm_bindgen.start());
+        wasm_bindgen(\"build/{package_name}_bg.wasm\").then(() => wasm_bindgen.run());
     </script>
 </body>
 </html>
