@@ -7,3 +7,4 @@ authors = ["Sharad Chand <sharad.d.chand@gmail.com>"]
 serde = { version = "1.0.79", features = ["serde_derive"] }
 toml = "0.4.6"
 failure = "0.1.2"
+structopt = "0.2.10"
