@@ -26,10 +26,7 @@ impl BuildCommand {
         let mut child = exec_cmd(&cargo_build).map_err(Error::BuildFailed)?;
         child.wait().map_err(Error::BuildFailed)?;
 
-        println!(
-            "  {} JS bindings",
-            "Generating".green().bold()
-        );
+        println!("  {} JS bindings", "Generating".green().bold());
         let cli_data = CliData::sniff()?;
         let target_path = cli_data.wasm_file_path(!self.release);
         let wasm_bindgen = format!(
@@ -37,10 +34,17 @@ impl BuildCommand {
             target_path.to_string_lossy(),
             target_path.parent().unwrap().to_string_lossy()
         );
-        let mut child = exec_cmd(&wasm_bindgen).map_err(Error::BuildFailed)?;
-        child.wait().map_err(Error::BuildFailed)?;
-
-        Ok(())
+        match exec_cmd(&wasm_bindgen) {
+            Ok(mut child) => {
+                child.wait().map_err(Error::BuildFailed)?;
+                Ok(())
+            }
+            Err(e) => if let io::ErrorKind::NotFound = e.kind() {
+                Err(Error::WasmBindgenRequired)
+            } else {
+                Err(Error::BuildFailed(e))
+            },
+        }
     }
 }
 

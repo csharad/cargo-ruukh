@@ -11,4 +11,9 @@ pub enum Error {
     BuildFailed(#[cause] io::Error),
     #[fail(display = "{}", _0)]
     Io(#[cause] io::Error),
+    #[fail(
+        display = "`wasm-bindgen` is required to run this command. Install it\
+                   with `cargo install wasm-bindgen`."
+    )]
+    WasmBindgenRequired,
 }
