@@ -8,7 +8,7 @@ projects.
 ## Installation
 
 ```shell
-cargo install cargo-ruukh
+cargo install cargo-ruukh --git https://github.com/csharad/cargo-ruukh
 ```
 
 ## Build
