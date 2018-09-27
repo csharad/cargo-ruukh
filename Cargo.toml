@@ -5,7 +5,7 @@ authors = ["Sharad Chand <sharad.d.chand@gmail.com>"]
 
 [dependencies]
 serde = { version = "1.0.79", features = ["serde_derive"] }
-toml = "0.4.6"
+toml = "0.4.7"
 failure = "0.1.2"
 structopt = "0.2.10"
 colored = "1.6.1"
