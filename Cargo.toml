@@ -1,7 +1,14 @@
 [package]
 name = "cargo-ruukh"
-version = "0.1.0"
+version = "0.0.2"
+description = "CLI to build & run Ruukh apps."
 authors = ["Sharad Chand <sharad.d.chand@gmail.com>"]
+license = "MIT"
+documentation = "https://docs.rs/cargo-ruukh"
+repository = "https://www.github.com/csharad/cargo-ruukh"
+readme = "./README.md"
+keywords = ["CLI", "ruukh", "framework"]
+categories = ["command-line-utilities"]
 
 [dependencies]
 serde = { version = "1.0.79", features = ["serde_derive"] }
