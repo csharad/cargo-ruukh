@@ -5,6 +5,17 @@ projects.
 
 #### !! THIS IS HIGHLY UNSTABLE !!
 
+## Requirement
+
+[`wasm-bindgen-cli`](https://rustwasm.github.io/wasm-bindgen/whirlwind-tour/basic-usage.html)
+is required by this CLI, so install it first if you do not have it already.
+
+```shell
+rustup target add wasm32-unknown-unknown
+
+cargo +nightly install wasm-bindgen-cli
+```
+
 ## Installation
 
 ```shell
