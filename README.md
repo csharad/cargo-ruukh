@@ -11,46 +11,45 @@ projects.
 is required by this CLI, so install it first if you do not have it already.
 
 ```shell
-rustup target add wasm32-unknown-unknown
-
-cargo +nightly install wasm-bindgen-cli
+$ rustup target add wasm32-unknown-unknown
+$ cargo +nightly install wasm-bindgen-cli
 ```
 
 ## Installation
 
 ```shell
-cargo install cargo-ruukh
+$ cargo install cargo-ruukh
 ```
 
 ## Build
 
 Build in debug mode.
 ```shell
-cargo ruukh build 
+$ cargo ruukh build 
 ```
 
 Build in release mode.
 ```shell
-cargo ruukh build --release 
+$ cargo ruukh build --release 
 ```
 
 ## Run
 
 Run the project in browser.
 ```shell
-cargo ruukh run
+$ cargo ruukh run
 ```
 
 Run the project in browser with watch mode.
 ```shell
-cargo ruukh run --watch
+$ cargo ruukh run --watch
 ```
 
 ## Help
 
 To see other options available in this CLI.
 ```shell
-cargo ruukh -h
+$ cargo ruukh -h
 ```
 
 ## Template
