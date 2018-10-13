@@ -99,7 +99,7 @@ fn find_workspace_for_manifest(path: &Path) -> PathBuf {
 }
 
 fn find_index_html(path: &Path) -> Option<PathBuf> {
-    let src = path.join("src/index.html");
+    let src = path.join("index.html");
     if src.is_file() {
         Some(src)
     } else {
