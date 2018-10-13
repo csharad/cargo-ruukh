@@ -71,9 +71,9 @@ The template looks like this internally. Override this if you need it.
 </head>
 <body>
     <div id="app"></div>
-    <script src="build/$PACKAGE_NAME_JS$"></script>
+    <script src="static/$PACKAGE_NAME_JS$"></script>
     <script>
-        wasm_bindgen("build/$PACKAGE_NAME_WASM$").then(() => wasm_bindgen.run());
+        wasm_bindgen("static/$PACKAGE_NAME_WASM$").then(() => wasm_bindgen.run());
     </script>
 </body>
 </html>
