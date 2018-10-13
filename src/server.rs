@@ -24,19 +24,21 @@ pub fn launch_server(debug: bool, cli_data: CliData) -> Result<(), Error> {
 </head>
 <body>
     <div id=\"app\"></div>
-    <script src=\"build/{package_name}.js\"></script>
+    <script src=\"static/{package_name}.js\"></script>
     <script>
-        wasm_bindgen(\"build/{package_name}_bg.wasm\").then(() => wasm_bindgen.run());
+        wasm_bindgen(\"static/{package_name}_bg.wasm\").then(() => wasm_bindgen.run());
     </script>
 </body>
 </html>
         ", package_name = package_name)
     };
 
-    let build_dir = warp::path("build").and(warp::fs::dir(cli_data.target_path(debug)));
+    let build_dir = warp::path("static").and(warp::fs::dir(cli_data.target_path(debug)));
+    let static_dir =
+        warp::path("static").and(warp::fs::dir(cli_data.project_path().join("static/")));
 
     let any_page = warp::any().map(move || html.clone());
-    let routes = build_dir.or(any_page);
+    let routes = build_dir.or(static_dir).or(any_page);
 
     println!("     {} at http://localhost:3000", "Serving".green().bold());
     warp::serve(routes).run(([127, 0, 0, 1], 3000));
