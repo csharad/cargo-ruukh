@@ -21,6 +21,12 @@ $ cargo +nightly install wasm-bindgen-cli
 $ cargo install cargo-ruukh
 ```
 
+## Updation
+
+```shell
+$ cargo install -f cargo-ruukh
+```
+
 ## Build
 
 Build in debug mode.

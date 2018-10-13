@@ -6,11 +6,10 @@ Till version `0.1.0`, each patch version may be breaking change.
 ## [Unreleased]
 
 ### Added
-- `static` folder within project root exposed on `/static` location.
+- 
 
 ### Changed
-- Resolve location of `index.html` to project root.
-- Build files available at `/static` location.
+- 
 
 ### Deprecated
 - 
@@ -23,6 +22,15 @@ Till version `0.1.0`, each patch version may be breaking change.
 
 ### Security
 -
+
+## [0.0.3] - 2018-10-13
+
+### Added
+- `static` folder within project root exposed on `/static` location.
+
+### Changed
+- Resolve location of `index.html` to project root.
+- Build files available at `/static` location.
 
 ## [0.0.2] - 2018-10-03
 

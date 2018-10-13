@@ -1,6 +1,6 @@
 [package]
 name = "cargo-ruukh"
-version = "0.0.2"
+version = "0.0.3"
 description = "CLI to build & run Ruukh apps."
 authors = ["Sharad Chand <sharad.d.chand@gmail.com>"]
 license = "MIT"
