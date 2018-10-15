@@ -11,7 +11,7 @@ keywords = ["CLI", "ruukh", "framework"]
 categories = ["command-line-utilities"]
 
 [dependencies]
-serde = { version = "1.0.79", features = ["serde_derive"] }
+serde = { version = "1.0.80", features = ["serde_derive"] }
 toml = "0.4.8"
 failure = "0.1.2"
 structopt = "0.2.12"
