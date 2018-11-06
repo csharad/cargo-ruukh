@@ -61,8 +61,7 @@ $ cargo ruukh -h
 ## Template
 
 The CLI uses a predefined template of html to run the project in the browser.
-You may override this template by placing `index.html` within the project's 
-`src` folder.
+You may override this template by placing `index.html` within the project folder.
 The template looks like this internally. Override this if you need it.
 
 ```html
